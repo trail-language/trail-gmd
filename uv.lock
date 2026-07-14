@@ -280,7 +280,7 @@ dev = [
 requires-dist = [
     { name = "httpx", specifier = ">=0.27" },
     { name = "polars", specifier = ">=1.20" },
-    { name = "trail-lang", specifier = ">=0.2" },
+    { name = "trail-lang", specifier = ">=0.3" },
 ]
 
 [package.metadata.requires-dev]
@@ -291,7 +291,7 @@ dev = [
 
 [[package]]
 name = "trail-lang"
-version = "0.2.0"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -299,9 +299,9 @@ dependencies = [
     { name = "polars" },
     { name = "pyyaml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/63/cd/8df6e6e9b3664a22f3cc62a813dc72022c74b7c5dde3f8d43b50eaa2b9a2/trail_lang-0.2.0.tar.gz", hash = "sha256:26dc15d3d535958784fba90fffb167d42c0b42e73ef566e825d4f8828c9bd456", size = 75140, upload-time = "2026-07-14T20:59:49.436Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c5/56/50fd910676205284e2469e4647910f1685abbef978ddaacfab701106677c/trail_lang-0.3.0.tar.gz", hash = "sha256:8ba69b12dc65d7c805cd4485de1dfe7bb056ee87f523a2baed7d683093485926", size = 75136, upload-time = "2026-07-14T22:00:09.27Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/87/97/e73d04d314f0e43288789546ad9f1dfcac7326b8d68f9705dcaf867cc918/trail_lang-0.2.0-py3-none-any.whl", hash = "sha256:db78335c7e1ef2d3a67b6118aad844e6cbaf31ebde0dc305363daaaad96e65c4", size = 37498, upload-time = "2026-07-14T20:59:48.212Z" },
+    { url = "https://files.pythonhosted.org/packages/5e/10/9381f04d069a515539021cbdb2c2b92000cee790618c7ac9ba664df9af53/trail_lang-0.3.0-py3-none-any.whl", hash = "sha256:ad5bef4cd189e5b62fbd8afe26527e31b21b0ae1adf6eb0528a6ef302b75c7e7", size = 37490, upload-time = "2026-07-14T22:00:07.729Z" },
 ]
 
 [[package]]

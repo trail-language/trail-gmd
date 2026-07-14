@@ -1,6 +1,6 @@
 """GmdSource: a Trail data source backed by the Global Macro Database.
 
-Country-by-year macro indicators as a Trail panel (`security` = ISO3, `period` = year).
+Country-by-year macro indicators as a Trail panel (`entity` = ISO3, `period` = year).
 Implements the full ExtendedDataSource contract and contributes the `gmd.*` field
 vocabulary (see trail_gmd.schema_fields). Data is fetched on demand under GMD's
 non-commercial terms; the required citation is printed on first load.
@@ -45,7 +45,7 @@ class GmdSource(ExtendedDataSource):
         path = fetch.fetch_csv(version, self.cache_dir)
         panel = convert.to_panel(path, fields, historical_only=self.historical_only)
         if self._countries:
-            panel = panel.filter(pl.col("security").is_in(self._countries))
+            panel = panel.filter(pl.col("entity").is_in(self._countries))
         if periods is not None:
             lo, hi = periods
             panel = panel.filter((pl.col("period") >= lo) & (pl.col("period") <= hi))

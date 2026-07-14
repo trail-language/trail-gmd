@@ -2,7 +2,7 @@
 
 The released file is wide: one row per (ISO3, year), one column per indicator code, plus a
 `forecast_<code>` flag per variable. We select the requested `gmd.*` fields, optionally mask
-IMF-WEO projection cells to null, and emit a `(security, period)` polars panel.
+IMF-WEO projection cells to null, and emit a `(entity, period)` polars panel.
 """
 from __future__ import annotations
 
@@ -22,9 +22,9 @@ def to_panel(
     *,
     historical_only: bool = True,
 ) -> pl.DataFrame:
-    """Return a `(security, period, gmd.*)` panel for the requested fields.
+    """Return a `(entity, period, gmd.*)` panel for the requested fields.
 
-    `security` = ISO3 country, `period` = int year. Value columns are Float64 (meta columns
+    `entity` = ISO3 country, `period` = int year. Value columns are Float64 (meta columns
     Utf8). When `historical_only`, any cell flagged by its `forecast_<code>` column is nulled.
     """
     requested = [f for f in sorted(fields) if f in SCHEMA_FIELDS]
@@ -56,10 +56,10 @@ def to_panel(
 
     return (
         df.select([
-            pl.col(ISO3_COL).cast(pl.Utf8).alias("security"),
+            pl.col(ISO3_COL).cast(pl.Utf8).alias("entity"),
             pl.col(YEAR_COL).cast(pl.Int32, strict=False).alias("period"),
             *value_exprs,
         ])
-        .drop_nulls("security")
-        .sort(["security", "period"])
+        .drop_nulls("entity")
+        .sort(["entity", "period"])
     )
