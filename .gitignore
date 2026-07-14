@@ -1,0 +1,13 @@
+__pycache__/
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+dist/
+.gmd-cache/
+# never commit GMD data (non-commercial license; fetched on demand)
+GMD_*.csv
+GMD_*.dta
+GMD_*.xlsx
+.omc/
+.claude/
