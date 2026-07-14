@@ -39,11 +39,6 @@ Issues = "https://github.com/trail-language/trail-gmd/issues"
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.8"]
 
-# The pluggable-schema feature lands in trail-lang 0.2.0; until that is on PyPI, source it
-# from the trail-py branch. Repoint to the default branch or drop this once 0.2.0 is published.
-[tool.uv.sources]
-trail-lang = { git = "https://github.com/trail-language/trail-py", branch = "feat/pluggable-schema" }
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
