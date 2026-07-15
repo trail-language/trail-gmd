@@ -16,5 +16,5 @@ def test_live_resolve_fetch_and_load():
     panel = src.load({"gmd.rGDP", "gmd.CPI", "gmd.infl"}, periods=(2000, 2020))
     assert panel.height > 0
     assert panel["gmd.rGDP"].drop_nulls().len() > 0
-    latest = panel.sort("period").tail(1).to_dicts()[0]
+    latest = panel.sort("time").tail(1).to_dicts()[0]
     assert latest["gmd.rGDP"] and latest["gmd.rGDP"] > 0

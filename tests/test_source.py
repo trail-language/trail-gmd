@@ -32,7 +32,7 @@ def test_country_and_period_filter(monkeypatch):
     src = GmdSource({"countries": ["USA"]})
     panel = src.load({"gmd.rGDP"}, periods=(2020, 2021))
     assert panel["entity"].unique().to_list() == ["USA"]
-    assert sorted(panel["period"].unique().to_list()) == [2020, 2021]
+    assert sorted(panel["time"].dt.year().unique().to_list()) == [2020, 2021]
 
 
 def test_capabilities(gmd_source):

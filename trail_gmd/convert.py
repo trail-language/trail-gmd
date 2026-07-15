@@ -2,7 +2,7 @@
 
 The released file is wide: one row per (ISO3, year), one column per indicator code, plus a
 `forecast_<code>` flag per variable. We select the requested `gmd.*` fields, optionally mask
-IMF-WEO projection cells to null, and emit a `(entity, period)` polars panel.
+IMF-WEO projection cells to null, and emit a `(entity, time)` polars panel.
 """
 from __future__ import annotations
 
@@ -57,9 +57,9 @@ def to_panel(
     return (
         df.select([
             pl.col(ISO3_COL).cast(pl.Utf8).alias("entity"),
-            pl.col(YEAR_COL).cast(pl.Int32, strict=False).alias("period"),
+            pl.datetime(pl.col(YEAR_COL).cast(pl.Int32, strict=False), 12, 31).alias("time"),
             *value_exprs,
         ])
         .drop_nulls("entity")
-        .sort(["entity", "period"])
+        .sort(["entity", "time"])
     )
