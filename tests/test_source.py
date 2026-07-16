@@ -38,3 +38,5 @@ def test_country_and_period_filter(monkeypatch):
 def test_capabilities(gmd_source):
     caps = gmd_source.capabilities()
     assert caps.frequency == "annual" and "Global Macro Database" in caps.provenance
+    # entities are ISO3 countries; the engine remaps them onto stocks via meta.country
+    assert caps.entity_dim == "country"
