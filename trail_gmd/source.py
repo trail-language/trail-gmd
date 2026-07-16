@@ -66,6 +66,7 @@ class GmdSource(ExtendedDataSource):
     def capabilities(self) -> Capabilities:
         return Capabilities(
             frequency="annual",
+            entity_dim="country",  # entities are ISO3 countries, remapped onto stocks via meta.country
             provides_meta=True,
             provenance="Global Macro Database (NBER WP 33714)",
         )
