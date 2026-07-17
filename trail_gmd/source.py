@@ -7,6 +7,9 @@ non-commercial terms; the required citation is printed on first load.
 """
 from __future__ import annotations
 
+import warnings
+from functools import lru_cache
+
 import polars as pl
 
 from trail.source import Capabilities, ExtendedDataSource, FieldInfo
@@ -20,7 +23,13 @@ CITATION = (
     "https://www.globalmacrodata.com"
 )
 
-_cited = False
+@lru_cache(maxsize=1)
+def _cite() -> None:
+    warnings.warn(f"[trail-gmd] {CITATION}", GmdCitationNotice, stacklevel=3)
+
+
+class GmdCitationNotice(UserWarning):
+    """The required GMD attribution (printed once per process, via warnings not stdout)."""
 
 
 class GmdSource(ExtendedDataSource):
@@ -37,10 +46,7 @@ class GmdSource(ExtendedDataSource):
         self._countries = [str(c).upper() for c in countries]
 
     def load(self, fields: set[str], *, periods: tuple[int, int] | None = None) -> pl.DataFrame:
-        global _cited
-        if not _cited:
-            print(f"[trail-gmd] {CITATION}")
-            _cited = True
+        _cite()
         version = fetch.resolve_version(self.version)
         path = fetch.fetch_csv(version, self.cache_dir)
         panel = convert.to_panel(path, fields, historical_only=self.historical_only)
