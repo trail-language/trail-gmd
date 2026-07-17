@@ -74,6 +74,7 @@ class GmdSource(DataSource):
         return Capabilities(
             frequency="annual",
             entity_dim="country",  # entities are ISO3 countries, remapped onto stocks via meta.country
+            bridge_field="meta.country",  # the engine reads this instead of hardcoding the dimension
             provides_meta=True,
             provenance="Global Macro Database (NBER WP 33714)",
         )
