@@ -1,9 +1,9 @@
 """GmdSource: a Trail data source backed by the Global Macro Database.
 
 Country-by-year macro indicators as a Trail panel (`entity` = ISO3, `time` = year-end).
-Implements the full ExtendedDataSource contract and contributes the `gmd.*` field
-vocabulary (see trail_gmd.schema_fields). Data is fetched on demand under GMD's
-non-commercial terms; the required citation is printed on first load.
+Implements the DataSource contract and contributes the `gmd.*` field vocabulary
+(see trail_gmd.schema_fields). Data is fetched on demand under GMD's non-commercial
+terms; the required citation is printed on first load.
 """
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from functools import lru_cache
 
 import polars as pl
 
-from trail.source import Capabilities, ExtendedDataSource, FieldInfo
+from trail.source import Capabilities, DataSource, FieldInfo, LoadRequest
 
 from trail_gmd import convert, fetch
 from trail_gmd.schema_fields import SCHEMA_FIELDS
@@ -32,7 +32,7 @@ class GmdCitationNotice(UserWarning):
     """The required GMD attribution (printed once per process, via warnings not stdout)."""
 
 
-class GmdSource(ExtendedDataSource):
+class GmdSource(DataSource):
     """Global Macro Database indicators as a country-by-year Trail panel."""
 
     name = "gmd"
@@ -45,8 +45,9 @@ class GmdSource(ExtendedDataSource):
         countries = self.options.get("countries") or self.options.get("tickers") or []
         self._countries = [str(c).upper() for c in countries]
 
-    def load(self, fields: set[str], *, periods: tuple[int, int] | None = None) -> pl.DataFrame:
+    def load(self, request: LoadRequest) -> pl.DataFrame:
         _cite()
+        fields, periods = request.fields, request.periods
         version = fetch.resolve_version(self.version)
         path = fetch.fetch_csv(version, self.cache_dir)
         panel = convert.to_panel(path, fields, historical_only=self.historical_only)
@@ -58,7 +59,7 @@ class GmdSource(ExtendedDataSource):
             panel = panel.filter((yr >= lo) & (yr <= hi))
         return panel
 
-    def available_fields(self) -> set[str]:
+    def available_fields(self, frequency: str | None = None) -> set[str]:
         return set(SCHEMA_FIELDS)
 
     def describe_field(self, field: str) -> FieldInfo | None:
