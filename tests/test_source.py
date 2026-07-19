@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from trail.source import LoadRequest
 from trail.testing import assert_source_conforms
 
 from trail_gmd.schema_fields import SCHEMA_FIELDS
@@ -30,7 +31,7 @@ def test_country_and_period_filter(monkeypatch):
     monkeypatch.setattr(fetch, "resolve_version", lambda version="current", **k: "2099_01")
     monkeypatch.setattr(fetch, "fetch_csv", lambda version, cache_dir=None: FIXTURE)
     src = GmdSource({"countries": ["USA"]})
-    panel = src.load({"gmd.rGDP"}, periods=(2020, 2021))
+    panel = src.load(LoadRequest(fields=frozenset({"gmd.rGDP"}), periods=(2020, 2021)))
     assert panel["entity"].unique().to_list() == ["USA"]
     assert sorted(panel["time"].dt.year().unique().to_list()) == [2020, 2021]
 
